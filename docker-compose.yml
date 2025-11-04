@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  speak-backend:
+    build: .
+    container_name: speak-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - speak-network
+
+networks:
+  speak-network:
+    driver: bridge
+
