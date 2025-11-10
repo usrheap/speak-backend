@@ -24,9 +24,9 @@ func main() {
 
 	app := fiber.New()
 
-	// Configure CORS to allow requests from http://localhost:8000
+	// Configure CORS to allow requests from frontend
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:8000",
+		AllowOrigins: "http://62.171.170.236,http://localhost:8000",
 		AllowMethods: "GET,POST,OPTIONS",
 		AllowHeaders: "Content-Type,Authorization",
 		AllowCredentials: true,
