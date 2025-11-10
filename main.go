@@ -26,10 +26,10 @@ func main() {
 
 	// Configure CORS to allow requests from frontend
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://62.171.170.236,http://localhost:8000",
-		AllowMethods: "GET,POST,OPTIONS",
-		AllowHeaders: "Content-Type,Authorization",
-		AllowCredentials: true,
+		AllowOrigins:     "*",
+		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
+		AllowHeaders:     "Origin,Content-Type,Accept,Authorization",
+		AllowCredentials: false,
 	}))
 
 	app.Get("/api/alive", handlers.Alive)
