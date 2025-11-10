@@ -1,0 +1,61 @@
+name: Deploy SpeakAllRight (Frontend + Backend)
+
+on:
+  push:
+    branches:
+      - main  # adjust if your main branch is different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Deploy via SSH (password auth)
+        env:
+          SSHPASS: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+
+            echo "========== FRONTEND DEPLOYMENT =========="
+            cd ~/Projects/SpeakAllRight/speak-frontend
+
+            echo "Pulling latest frontend code..."
+            git pull
+
+            echo "Stopping and removing old frontend container..."
+            docker stop speak-frontend || true
+            docker rm speak-frontend || true
+
+            echo "Building new frontend image..."
+            docker build \
+              --build-arg REACT_APP_API_URL=http://62.171.170.236:3000 \
+              -t speak-frontend .
+
+            echo "Running new frontend container..."
+            docker run -d -p 80:80 --name speak-frontend speak-frontend
+
+
+            echo "========== BACKEND DEPLOYMENT =========="
+            cd ~/Projects/SpeakAllRight/speak-backend
+
+            echo "Pulling latest backend code..."
+            git pull
+
+            echo "Stopping and removing old backend container..."
+            docker stop speak-backend || true
+            docker rm speak-backend || true
+
+            echo "Building new backend image..."
+            docker build -t speak-backend .
+
+            echo "Running new backend container..."
+            docker run --rm -d -p 3000:3000 --env-file .env --name speak-backend speak-backend
+
+            echo "✅ All deployments complete!"
+          EOF
