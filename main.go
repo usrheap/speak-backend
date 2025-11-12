@@ -38,6 +38,11 @@ func main() {
 	app.Post("/api/loginviaemail", handlers.LoginViaEmail)
 	app.Post("/api/loginviaemailverify", handlers.LoginViaEmailVerify)
 	app.Post("/api/tokenverify", handlers.TokenVerify)
+	app.Get("/api/getbalance", handlers.GetBalance)
+	app.Get("/api/verifyadmin", handlers.VerifyAdmin)
+	app.Post("/api/addpromocode", handlers.AddPromocode)
+	app.Post("/api/activatepromocode", handlers.ActivatePromocode)
+	app.Get("/api/getpastpromocodes", handlers.GetPastPromocodes)
 
 	app.Listen(":3000")
 }
