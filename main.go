@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
-
+// ok
 func main() {
 	// Load .env file
 	if err := godotenv.Load(".env"); err != nil {
